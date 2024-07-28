@@ -5,4 +5,9 @@ public class Simulation {
         System.out.println("Hello World");
 
     }
+
+    public void methodA(){
+        
+    }
+
 }
