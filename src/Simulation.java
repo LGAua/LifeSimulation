@@ -7,7 +7,11 @@ public class Simulation {
     }
 
     public void methodA(){
-        
+
+    }
+
+    public void method(){
+
     }
 
 }
