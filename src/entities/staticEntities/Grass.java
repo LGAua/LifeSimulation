@@ -1,4 +1,6 @@
 package src.entities.staticEntities;
 
-public class Grass {
+import src.entities.Entity;
+
+public class Grass extends Entity {
 }

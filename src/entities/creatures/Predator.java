@@ -1,4 +1,5 @@
 package src.entities.creatures;
 
-public class Predator {
+
+public class Predator extends Creature {
 }

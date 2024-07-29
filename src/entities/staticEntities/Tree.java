@@ -1,4 +1,6 @@
 package src.entities.staticEntities;
 
-public class Tree {
+import src.entities.Entity;
+
+public class Tree extends Entity {
 }

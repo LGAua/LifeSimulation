@@ -1,4 +1,5 @@
 package src.entities.creatures;
 
-public class Herbivore {
+
+public class Herbivore extends Creature {
 }

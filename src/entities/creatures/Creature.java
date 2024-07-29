@@ -1,4 +1,6 @@
 package src.entities.creatures;
 
-public class Creature {
+import src.entities.Entity;
+
+public class Creature extends Entity {
 }
