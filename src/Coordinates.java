@@ -1,5 +1,7 @@
 package src;
 
+import java.util.Set;
+
 public class Coordinates {
     private int x;
     private int y;
@@ -10,9 +12,17 @@ public class Coordinates {
     }
 
     public static Coordinates getRandomCoordinates(){
-        int randomPositionX = (int) (Math.random() * WorldMap.getWorldSizeX());
-        int randomPositionY = (int) (Math.random() * WorldMap.getWorldSizeY());
-        return new Coordinates(randomPositionX, randomPositionY);
+        Set<Coordinates> occupiedPositions = WorldMap.getOccupiedPositions();
+        Coordinates position;
+        while (true) {
+            int randomPositionX = (int) (Math.random() * WorldMap.getWorldSizeX());
+            int randomPositionY = (int) (Math.random() * WorldMap.getWorldSizeY());
+            position = new Coordinates(randomPositionX,randomPositionY);
+            if (!occupiedPositions.contains(position)){
+                break;
+            }
+        }
+        return position;
     }
 
     @Override

@@ -5,7 +5,7 @@ import src.Coordinates;
 
 public class Predator extends Creature {
     private int power = 1;
-    private String icon = "P";
+    private String icon = "\uD83D\uDC7A";
 
     public Predator(Coordinates coordinates){
         position = coordinates;

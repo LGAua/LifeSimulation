@@ -1,15 +1,15 @@
 package src;
 
 import src.entities.Entity;
-import src.entities.creatures.Creature;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class WorldMap {
     private static Map<Coordinates, Entity> world = new HashMap<>();
-    private static int worldSizeX = 100;
-    private static int worldSizeY = 20;
+    private static int worldSizeX = 10;
+    private static int worldSizeY = 10;
 
 
     public static void renderWorldMap() {
@@ -17,22 +17,25 @@ public class WorldMap {
             for (int x = 0; x < worldSizeX; x++) {
                 Coordinates coordinates = new Coordinates(x, y);
                 if (world.containsKey(coordinates)) {
-                    Creature creature = (Creature) world.get(coordinates);
-                    System.out.print(creature.getIcon());
+                    System.out.print(world.get(coordinates).getIcon());
                 } else {
-                    System.out.print(".");
+                    System.out.print("⬛");
                 }
             }
             System.out.println();
         }
     }
 
-
     public static void addEntity(Entity entity) {
         world.put(entity.getPosition(), entity);
+
     }
 
-        public static void removeEntity(Coordinates coordinates) {
+    public static Set<Coordinates> getOccupiedPositions() {
+        return world.keySet();
+    }
+
+    public static void removeEntity(Coordinates coordinates) {
         world.remove(coordinates);
     }
 

@@ -2,28 +2,39 @@ package src;
 
 import src.entities.creatures.Herbivore;
 import src.entities.creatures.Predator;
+import src.entities.staticEntities.Grass;
+import src.entities.staticEntities.Rock;
+import src.entities.staticEntities.Tree;
 
 public class Actions {
-
     public void startNewGame() {
 
     }
 
     public static void addCreaturesOnMap(int amountOfPredators, int amountOFHerbivores) {
-        for (int i = 0; i <= 10; i++) {
-            int randomPositionX = (int) (Math.random() * WorldMap.getWorldSizeX());
-            int randomPositionY = (int) (Math.random() * WorldMap.getWorldSizeY());
-            Coordinates randomCoordinates = new Coordinates(randomPositionX,randomPositionY);
-            WorldMap.addEntity(new Predator(randomCoordinates));
+        for (int i = 0; i < amountOfPredators; i++) {
+            WorldMap.addEntity(new Predator(Coordinates.getRandomCoordinates()));
         }
 
-        for (int i = 0; i <= 10; i++) {
-            int randomPositionX = (int) (Math.random() * WorldMap.getWorldSizeX());
-            int randomPositionY = (int) (Math.random() * WorldMap.getWorldSizeY());
-            Coordinates randomCoordinates = new Coordinates(randomPositionX,randomPositionY);
-            WorldMap.addEntity(new Herbivore(randomCoordinates));
+        for (int i = 0; i < amountOFHerbivores; i++) {
+            WorldMap.addEntity(new Herbivore(Coordinates.getRandomCoordinates()));
         }
 
+        addStaticEntitiesOnMap(amountOfPredators / 2, amountOfPredators / 2, amountOFHerbivores * 3);
+    }
 
+    //4 -predators, 1 - herbovore, 2 - rocks ,2 - trees, 3 - grass
+    public static void addStaticEntitiesOnMap(int amountOfRocks, int amountOfTrees, int amountOfGrass) {
+        for (int i = 0; i < amountOfRocks; i++) {
+            WorldMap.addEntity(new Rock(Coordinates.getRandomCoordinates()));
+        }
+
+        for (int i = 0; i < amountOfTrees; i++) {
+            WorldMap.addEntity(new Tree(Coordinates.getRandomCoordinates()));
+        }
+
+        for (int i = 0; i < amountOfGrass; i++) {
+            WorldMap.addEntity(new Grass(Coordinates.getRandomCoordinates()));
+        }
     }
 }
