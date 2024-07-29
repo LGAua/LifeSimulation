@@ -9,6 +9,12 @@ public class Coordinates {
         this.y = y;
     }
 
+    public static Coordinates getRandomCoordinates(){
+        int randomPositionX = (int) (Math.random() * WorldMap.getWorldSizeX());
+        int randomPositionY = (int) (Math.random() * WorldMap.getWorldSizeY());
+        return new Coordinates(randomPositionX, randomPositionY);
+    }
+
     @Override
     public int hashCode() {
         int result = 29;
