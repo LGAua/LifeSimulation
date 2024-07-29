@@ -1,22 +1,25 @@
 package src;
 
 import src.entities.Entity;
+import src.entities.creatures.Creature;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class WorldMap {
     private static Map<Coordinates, Entity> world = new HashMap<>();
-    private static int worldSizeX = 40;
-    private static int worldSizeY = 10;
+    private static int worldSizeX = 100;
+    private static int worldSizeY = 20;
 
-    public static void renderWorldMap(){
+
+    public static void renderWorldMap() {
         for (int y = 0; y < worldSizeY; y++) {
             for (int x = 0; x < worldSizeX; x++) {
-                Coordinates coordinates = new Coordinates(x,y);
-                if(world.containsKey(coordinates)){
-                    System.out.print(world.get(coordinates));
-                }else{
+                Coordinates coordinates = new Coordinates(x, y);
+                if (world.containsKey(coordinates)) {
+                    Creature creature = (Creature) world.get(coordinates);
+                    System.out.print(creature.getIcon());
+                } else {
                     System.out.print(".");
                 }
             }
@@ -25,12 +28,19 @@ public class WorldMap {
     }
 
 
-    public static void addEntity(Coordinates coordinates, Entity entity) {
-        world.put(coordinates, entity);
+    public static void addEntity(Entity entity) {
+        world.put(entity.getPosition(), entity);
     }
 
-    public static void removeEntity(Coordinates coordinates) {
+        public static void removeEntity(Coordinates coordinates) {
         world.remove(coordinates);
     }
 
+    public static int getWorldSizeX() {
+        return worldSizeX;
+    }
+
+    public static int getWorldSizeY() {
+        return worldSizeY;
+    }
 }
