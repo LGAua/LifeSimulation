@@ -3,7 +3,6 @@ package src.entities.staticEntities;
 import src.Coordinates;
 import src.WorldMap;
 import src.entities.Entity;
-import src.entities.creatures.Predator;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -19,7 +18,7 @@ public class Grass extends Entity {
 
     public static Queue<Coordinates> getGrassPositions() {
         for (Map.Entry<Coordinates, Entity> el : WorldMap.getWorld().entrySet()) {
-            if (el.getValue() instanceof Grass) {
+            if (el.getValue() instanceof Grass && !grassPositions.contains(el.getKey())){
                 grassPositions.add(el.getKey());
             }
         }

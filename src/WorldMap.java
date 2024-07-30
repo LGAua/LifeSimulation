@@ -28,8 +28,15 @@ public class WorldMap {
 
     public static void addEntity(Entity entity) {
         world.put(entity.getPosition(), entity);
-
     }
+
+    public static void moveEntity(Entity entity,Coordinates coordinates) {
+        world.remove(entity.getPosition());
+        entity.setPosition(coordinates);
+        world.put(coordinates, entity);
+    }
+
+
 
     public static Set<Coordinates> getOccupiedPositions() {
         return new HashSet<>(world.keySet());

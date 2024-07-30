@@ -2,7 +2,7 @@ package src;
 
 import java.util.Set;
 
-public class Coordinates implements Comparable {
+public class Coordinates {
     private int x;
     private int y;
 
@@ -25,10 +25,12 @@ public class Coordinates implements Comparable {
         return position;
     }
 
-    @Override
-    public int compareTo(Object o) {
-        Coordinates coordinates = (Coordinates) o;
-        return x - coordinates.x;
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     @Override

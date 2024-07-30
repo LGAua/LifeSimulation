@@ -21,11 +21,11 @@ public class Herbivore extends Creature {
 
     public static Queue<Coordinates> getHerbivoresPositions() {
         for (Map.Entry<Coordinates,Entity> el : WorldMap.getWorld().entrySet()){
-            if (el.getValue() instanceof Herbivore){
+            if (el.getValue() instanceof Herbivore && !herbivoresPositions.contains(el.getKey())){
                 herbivoresPositions.add(el.getKey());
             }
         }
-        return new LinkedList<>(herbivoresPositions);
+        return herbivoresPositions;
     }
 
     @Override

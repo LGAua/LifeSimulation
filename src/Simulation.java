@@ -1,20 +1,34 @@
 package src;
 
+import src.entities.Entity;
 import src.entities.creatures.Herbivore;
 import src.entities.creatures.Predator;
 import src.entities.staticEntities.Grass;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Map;
 
 
 public class Simulation {
-    public static void main(String[] args) {
-        Actions.addEntitiesOnMap(1,3);
+    public static void main(String[] args) throws InterruptedException {
+        Actions.addEntitiesOnMap(1, 3);
         WorldMap.renderWorldMap();
-        System.out.println(Herbivore.getHerbivoresPositions());
-        System.out.println(Predator.getPredatorsPositions());
-        System.out.println(Grass.getGrassPositions());
+
+        while (true) {
+            Thread.sleep(1000);
+            Predator predator = null;
+            for (Map.Entry<Coordinates, Entity> entity : WorldMap.getWorld().entrySet()) {
+                if (entity.getValue() instanceof Predator) {
+                    predator = (Predator) entity.getValue();
+                }
+            }
+            predator.makeMove();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            WorldMap.renderWorldMap();
+        }
+
+
     }
 
 //    static class TreeNode {

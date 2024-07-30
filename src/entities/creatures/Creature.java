@@ -8,5 +8,7 @@ public abstract class Creature extends Entity {
     protected int[] movesX= {0,-1,1,0};
     protected int[] movesY= {-1,0,0,1};
 
+
+
     protected abstract void makeMove();
 }
