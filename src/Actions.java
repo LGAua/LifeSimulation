@@ -23,11 +23,11 @@ public class Actions {
             WorldMap.addEntity(new Herbivore(Coordinates.getRandomCoordinates()));
         }
 
-        for (int i = 0; i < amountOfPredators / 2; i++) {
+        for (int i = 0; i < amountOfPredators * 10; i++) {
             WorldMap.addEntity(new Rock(Coordinates.getRandomCoordinates()));
         }
 
-        for (int i = 0; i < amountOfPredators / 2; i++) {
+        for (int i = 0; i < amountOfPredators * 10; i++) {
             WorldMap.addEntity(new Tree(Coordinates.getRandomCoordinates()));
         }
 

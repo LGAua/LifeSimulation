@@ -11,6 +11,7 @@ public class Predator extends Creature {
     private int power = 1;
     private String icon = "\uD83D\uDC7A";
     private static Queue<Coordinates> predatorsPositions = new LinkedList<>();
+    private Coordinates targetCoordinates;
 
     public Predator(Coordinates coordinates) {
         position = coordinates;
@@ -24,11 +25,29 @@ public class Predator extends Creature {
                 return;
             }
         }
-
-        Map<Coordinates, Boolean> isVisited = new TreeMap<>();
+        Set<Coordinates> isVisited = new TreeSet<>();
         Queue<Coordinates> adjacentCells = new LinkedList<>();
-
         Coordinates startCoordinates = this.getPosition();
+        if (targetCoordinates==null || !WorldMap.getWorld().containsKey(targetCoordinates)){
+            targetCoordinates = Herbivore.getHerbivoresPositions().poll();
+        }
+
+        while (true){
+            for (Coordinates coordinates : Herbivore.getHerbivoresPositions()){
+                if (startCoordinates.equals(coordinates)){
+                    break;
+                }
+            }
+            for (int i = 0; i < movesX.length ; i++) {
+                for (int j = 0; j < movesY.length; j++) {
+
+                }
+            }
+
+        }
+
+
+
     }
 
     public static Queue<Coordinates> getPredatorsPositions() {

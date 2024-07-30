@@ -1,1 +1,6 @@
+# IntelliJ IDEA
+.idea/
+
+# Build output directories
 out/
+target/
