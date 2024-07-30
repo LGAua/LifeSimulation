@@ -29,8 +29,13 @@ public class Herbivore extends Creature {
     }
 
     @Override
-    protected void makeMove() {
+    public void makeMove() {
 
+    }
+
+    @Override
+    protected Coordinates getTargetCoordinates() {
+        return targetCoordinates;
     }
 
     @Override
