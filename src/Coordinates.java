@@ -2,7 +2,7 @@ package src;
 
 import java.util.Set;
 
-public class Coordinates {
+public class Coordinates implements Comparable {
     private int x;
     private int y;
 
@@ -11,18 +11,24 @@ public class Coordinates {
         this.y = y;
     }
 
-    public static Coordinates getRandomCoordinates(){
+    public static Coordinates getRandomCoordinates() {
         Set<Coordinates> occupiedPositions = WorldMap.getOccupiedPositions();
         Coordinates position;
         while (true) {
             int randomPositionX = (int) (Math.random() * WorldMap.getWorldSizeX());
             int randomPositionY = (int) (Math.random() * WorldMap.getWorldSizeY());
-            position = new Coordinates(randomPositionX,randomPositionY);
-            if (!occupiedPositions.contains(position)){
+            position = new Coordinates(randomPositionX, randomPositionY);
+            if (!occupiedPositions.contains(position)) {
                 break;
             }
         }
         return position;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Coordinates coordinates = (Coordinates) o;
+        return x - coordinates.x;
     }
 
     @Override
@@ -43,5 +49,11 @@ public class Coordinates {
         }
         Coordinates cord = (Coordinates) o;
         return x == cord.x && y == cord.y;
+    }
+
+    @Override
+    public String toString() {
+        String str = "x:" + this.x + " y:" + this.y;
+        return str;
     }
 }

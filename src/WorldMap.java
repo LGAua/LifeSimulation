@@ -3,14 +3,14 @@ package src;
 import src.entities.Entity;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class WorldMap {
     private static Map<Coordinates, Entity> world = new HashMap<>();
-    private static int worldSizeX = 10;
-    private static int worldSizeY = 10;
-
+    private static final int worldSizeX = 10;
+    private static final int worldSizeY = 10;
 
     public static void renderWorldMap() {
         for (int y = 0; y < worldSizeY; y++) {
@@ -32,11 +32,15 @@ public class WorldMap {
     }
 
     public static Set<Coordinates> getOccupiedPositions() {
-        return world.keySet();
+        return new HashSet<>(world.keySet());
     }
 
     public static void removeEntity(Coordinates coordinates) {
         world.remove(coordinates);
+    }
+
+    public static Map<Coordinates, Entity> getWorld() {
+        return new HashMap<>(world);
     }
 
     public static int getWorldSizeX() {
