@@ -30,12 +30,25 @@ public class WorldMap {
         world.put(entity.getPosition(), entity);
     }
 
-    public static void moveEntity(Entity entity,Coordinates coordinates) {
+    public static void moveEntity(Entity entity, Coordinates coordinates) {
         world.remove(entity.getPosition());
         entity.setPosition(coordinates);
         world.put(coordinates, entity);
     }
 
+    public static Set<Coordinates> getAdjacentCells(Coordinates currentPosition) {
+        Set<Coordinates> set = new HashSet<>();
+        int[] movesX = {0, -1, 1, 0};
+        int[] movesY = {-1, 0, 0, 1};
+        for (int i = 0; i < movesX.length; i++) {
+            Coordinates coordinates = new Coordinates(currentPosition.getX() + movesX[i], currentPosition.getY() + movesY[i]);
+            if ((coordinates.getX() >= 0 && coordinates.getX() < WorldMap.getWorldSizeX())
+                    && (coordinates.getY() >= 0 && coordinates.getY() < WorldMap.getWorldSizeY())){
+                set.add(coordinates);
+            }
+        }
+        return set;
+    }
 
 
     public static Set<Coordinates> getOccupiedPositions() {
