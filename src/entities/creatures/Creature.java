@@ -11,56 +11,72 @@ import java.util.*;
 public abstract class Creature extends Entity {
     protected int health = 5;
     protected int movement = 1;
-    protected int[] movesX= {0,-1,1,0};
-    protected int[] movesY= {-1,0,0,1};
+    protected int[] movesX = {0, -1, 1, 0};
+    protected int[] movesY = {-1, 0, 0, 1};
     protected Coordinates targetCoordinates = this.getTargetCoordinates();
-
 
 
     protected abstract void makeMove();
 
     protected Coordinates moveTowardsTarget(Coordinates target) {
-        Map<Coordinates, Coordinates> visitedCells = new HashMap<>();
+        Map<Coordinates, Coordinates> cameFrom = new HashMap<>();
         Queue<Coordinates> adjacentCells = new LinkedList<>();
-        adjacentCells.add(this.getPosition());
-        visitedCells.put(this.getPosition(), null);
         Class<? extends Creature> aClass = this.getClass();
-
+        adjacentCells.add(this.getPosition());
+        cameFrom.put(this.getPosition(), null);
+        System.out.println("**************************");
         while (!adjacentCells.isEmpty()) {
             Coordinates currentPosition = adjacentCells.poll();
             if (currentPosition.equals(target)) {
                 break;
             }
-            for (int i = 0; i < movesX.length; i++) {
-                Coordinates coordinates = new Coordinates(currentPosition.getX() + movesX[i], currentPosition.getY() + movesY[i]);
-                if ((coordinates.getX() >= 0 && coordinates.getX() < WorldMap.getWorldSizeX())
-                        && (coordinates.getY() >= 0 && coordinates.getY() < WorldMap.getWorldSizeY())
-                        && !visitedCells.containsKey(coordinates)) {
-                    if (!(WorldMap.getWorld().get(coordinates) instanceof Rock)
-                            && !(WorldMap.getWorld().get(coordinates) instanceof Tree)
-                            && !this.getClass().isInstance(WorldMap.getWorld().get(coordinates))) {
-                        adjacentCells.add(coordinates);
-                        visitedCells.put(coordinates, currentPosition);
-                    }
+            for (Coordinates coordinates : WorldMap.getAdjacentCells(currentPosition)) {
+                if (!cameFrom.containsKey(coordinates)
+                        && !(WorldMap.getWorld().get(coordinates) instanceof Rock)
+                        && !(WorldMap.getWorld().get(coordinates) instanceof Tree)
+                        && !this.getClass().isInstance(WorldMap.getWorld().get(coordinates))) {
+                    adjacentCells.add(coordinates);
+                    cameFrom.put(coordinates, currentPosition);
+//                    Thread.sleep(300);
+//                    WorldMap.addEntity(new Predator(coordinates));
+//                    WorldMap.renderWorldMap();
                 }
             }
         }
-
-        Coordinates coordinatesToTarget = getRouteToTarget(visitedCells, this.getTargetCoordinates());
-        return coordinatesToTarget;
+        System.out.println(this.getPosition());
+        return getNextStepTowardsTarget(cameFrom, this.getTargetCoordinates());
     }
 
-    protected Coordinates getRouteToTarget(Map<Coordinates, Coordinates> mapToTarget, Coordinates targetCoordinates) {
-        List<Coordinates> route = new ArrayList<>();
-        Coordinates currentPosition = targetCoordinates;
+    private Coordinates getNextStepTowardsTarget(Map<Coordinates, Coordinates> cameFrom, Coordinates target) {
+        Coordinates current = target;
+        Coordinates nextStep = this.getPosition();
 
-        while (!this.getPosition().equals(currentPosition)) {
-            route.add(currentPosition);
-            currentPosition = mapToTarget.get(currentPosition);
+        while (current != null && !current.equals(this.getPosition())) {
+            nextStep = current;
+            current = cameFrom.get(current);
         }
-
-        return route.get(route.size()-1);
+//        System.out.println("Позиция демона"+this.getPosition());
+//        System.out.println("Идет в"+target);
+//        System.out.println(cameFrom);
+//        System.out.println(nextStep);
+//        System.out.println(current);
+        if(current==null){
+            return this.getPosition();
+        }
+        return nextStep;
     }
+
+//    protected Coordinates getRouteToTarget(Map<Coordinates, Coordinates> mapToTarget, Coordinates targetCoordinates) {
+//        List<Coordinates> route = new ArrayList<>();
+//        Coordinates currentPosition = targetCoordinates;
+//
+//        while (!this.getPosition().equals(currentPosition)) {
+//            route.add(currentPosition);
+//            currentPosition = mapToTarget.get(currentPosition);
+//        }
+//
+//        return route.get(route.size() - 1);
+//    }
 
     protected abstract Coordinates getTargetCoordinates();
 }

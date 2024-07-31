@@ -23,15 +23,15 @@ public class Actions {
             WorldMap.addEntity(new Herbivore(Coordinates.getRandomCoordinates()));
         }
 
-        for (int i = 0; i < amountOfPredators * 2; i++) {
+        for (int i = 0; i < 5; i++) {
             WorldMap.addEntity(new Rock(Coordinates.getRandomCoordinates()));
         }
 
-        for (int i = 0; i < amountOfPredators * 2; i++) {
+        for (int i = 0; i < 5; i++) {
             WorldMap.addEntity(new Tree(Coordinates.getRandomCoordinates()));
         }
 
-        for (int i = 0; i < amountOFHerbivores * 2; i++) {
+        for (int i = 0; i < 5; i++) {
             WorldMap.addEntity(new Grass(Coordinates.getRandomCoordinates()));
         }
 

@@ -13,7 +13,7 @@ public class Predator extends Creature {
     private int power = 1;
     private String icon = "\uD83D\uDC7A";
     private static Queue<Coordinates> predatorsPositions = new LinkedList<>();
-    private Coordinates targetCoordinates ;
+    private Coordinates targetCoordinates;
 
     public Predator(Coordinates coordinates) {
         position = coordinates;
@@ -30,7 +30,7 @@ public class Predator extends Creature {
             targetCoordinates = Herbivore.getHerbivoresPositions().poll();
         }
 
-        if (targetCoordinates!=null){
+        if (targetCoordinates != null) {
             Coordinates moveToCoordinates = moveTowardsTarget(targetCoordinates);
             WorldMap.moveEntity(this, moveToCoordinates);
         }
