@@ -50,6 +50,8 @@ public abstract class Creature extends Entity {
     private Coordinates getNextStepTowardsTarget(Map<Coordinates, Coordinates> cameFrom, Coordinates target) {
         Coordinates current = target;
         Coordinates nextStep = this.getPosition();
+        Queue<Coordinates> q = new PriorityQueue<>();
+
 
         while (current != null && !current.equals(this.getPosition())) {
             nextStep = current;

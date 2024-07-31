@@ -11,7 +11,6 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class Herbivore extends Creature {
-    private static Queue<Coordinates> herbivoresPositions = new LinkedList<>();
     private int power = 0;
     private String icon = "\uD83D\uDC31";
 
@@ -20,6 +19,7 @@ public class Herbivore extends Creature {
     }
 
     public static Queue<Coordinates> getHerbivoresPositions() {
+        Queue<Coordinates> herbivoresPositions = new LinkedList<>();
         for (Map.Entry<Coordinates,Entity> el : WorldMap.getWorld().entrySet()){
             if (el.getValue() instanceof Herbivore && !herbivoresPositions.contains(el.getKey())){
                 herbivoresPositions.add(el.getKey());

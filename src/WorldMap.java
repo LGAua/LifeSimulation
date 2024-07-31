@@ -50,6 +50,10 @@ public class WorldMap {
         return set;
     }
 
+    public static int heuristic (Coordinates currentPosition, Coordinates targetPosition){
+        System.out.println(Math.abs(currentPosition.getX()-targetPosition.getX()) + Math.abs(currentPosition.getY()-targetPosition.getY()));
+        return Math.abs(currentPosition.getX()-targetPosition.getX()) + Math.abs(currentPosition.getY()-targetPosition.getY());
+    }
 
     public static Set<Coordinates> getOccupiedPositions() {
         return new HashSet<>(world.keySet());

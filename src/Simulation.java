@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class Simulation {
     public static void main(String[] args) throws InterruptedException {
-        Actions.addEntitiesOnMap(3,5);
+        Actions.addEntitiesOnMap(1,4);
         List<Predator> list = new ArrayList<>();
         WorldMap.renderWorldMap();
         while (true){
