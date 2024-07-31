@@ -12,11 +12,11 @@ import java.util.Map;
 
 public class Simulation {
     public static void main(String[] args) throws InterruptedException {
-        Actions.addEntitiesOnMap(1,4);
+        Actions.addEntitiesOnMap(2,5);
         List<Predator> list = new ArrayList<>();
         WorldMap.renderWorldMap();
         while (true){
-            Thread.sleep(300);
+            Thread.sleep(1000);
             for (Map.Entry<Coordinates,Entity> entry : WorldMap.getWorld().entrySet()){
                 if (entry.getValue() instanceof Predator){
                     list.add((Predator)entry.getValue());
@@ -27,7 +27,6 @@ public class Simulation {
             }
             list.clear();
             WorldMap.renderWorldMap();
-            System.out.println(WorldMap.getWorld());
         }
 
 

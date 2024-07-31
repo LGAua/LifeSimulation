@@ -12,27 +12,25 @@ public class Actions {
     }
 
 
-
-
     public static void addEntitiesOnMap(int amountOfPredators, int amountOFHerbivores) {
+        for (int i = 0; i < 8; i++) {
+            WorldMap.addEntity(new Rock(new Coordinates(amountOfPredators, Coordinates.getRandomCoordinates().getY())));
+        }
+
+        for (int i = 0; i < 8; i++) {
+            WorldMap.addEntity(new Tree(new Coordinates(Coordinates.getRandomCoordinates().getX(), amountOFHerbivores)));
+        }
+
+        for (int i = 0; i < 5; i++) {
+            WorldMap.addEntity(new Grass(Coordinates.getRandomCoordinates()));
+        }
+
         for (int i = 0; i < amountOfPredators; i++) {
             WorldMap.addEntity(new Predator(Coordinates.getRandomCoordinates()));
         }
 
         for (int i = 0; i < amountOFHerbivores; i++) {
             WorldMap.addEntity(new Herbivore(Coordinates.getRandomCoordinates()));
-        }
-
-        for (int i = 0; i < 5; i++) {
-            WorldMap.addEntity(new Rock(Coordinates.getRandomCoordinates()));
-        }
-
-        for (int i = 0; i < 5; i++) {
-            WorldMap.addEntity(new Tree(Coordinates.getRandomCoordinates()));
-        }
-
-        for (int i = 0; i < 5; i++) {
-            WorldMap.addEntity(new Grass(Coordinates.getRandomCoordinates()));
         }
 
     }

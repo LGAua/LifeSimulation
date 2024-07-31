@@ -1,6 +1,7 @@
 package src.entities.creatures;
 
 import src.Coordinates;
+import src.PrioritizedNode;
 import src.WorldMap;
 import src.entities.Entity;
 import src.entities.staticEntities.Rock;
@@ -19,66 +20,48 @@ public abstract class Creature extends Entity {
     protected abstract void makeMove();
 
     protected Coordinates moveTowardsTarget(Coordinates target) {
+        Queue<PrioritizedNode> frontier = new PriorityQueue<>();
         Map<Coordinates, Coordinates> cameFrom = new HashMap<>();
-        Queue<Coordinates> adjacentCells = new LinkedList<>();
+        Map<Coordinates, Integer> costSoFar = new HashMap<>();
         Class<? extends Creature> aClass = this.getClass();
-        adjacentCells.add(this.getPosition());
+
+        frontier.add(new PrioritizedNode(this.getPosition(), 0));
         cameFrom.put(this.getPosition(), null);
+        costSoFar.put(this.getPosition(), 0);
+
         System.out.println("**************************");
-        while (!adjacentCells.isEmpty()) {
-            Coordinates currentPosition = adjacentCells.poll();
+
+        while (!frontier.isEmpty()) {
+            Coordinates currentPosition = frontier.poll().getCoordinates();
             if (currentPosition.equals(target)) {
                 break;
             }
             for (Coordinates coordinates : WorldMap.getAdjacentCells(currentPosition)) {
-                if (!cameFrom.containsKey(coordinates)
-                        && !(WorldMap.getWorld().get(coordinates) instanceof Rock)
-                        && !(WorldMap.getWorld().get(coordinates) instanceof Tree)
+                int newCost = costSoFar.get(currentPosition) + WorldMap.moveCost(currentPosition, coordinates);
+                if ((!costSoFar.containsKey(coordinates) || costSoFar.get(currentPosition) > newCost)
                         && !this.getClass().isInstance(WorldMap.getWorld().get(coordinates))) {
-                    adjacentCells.add(coordinates);
+                    costSoFar.put(coordinates,newCost);
+                    int priority = newCost + WorldMap.heuristic(this.getTargetCoordinates(),coordinates);
+                    frontier.add(new PrioritizedNode(coordinates,priority));
                     cameFrom.put(coordinates, currentPosition);
-//                    Thread.sleep(300);
-//                    WorldMap.addEntity(new Predator(coordinates));
-//                    WorldMap.renderWorldMap();
                 }
             }
         }
-        System.out.println(this.getPosition());
         return getNextStepTowardsTarget(cameFrom, this.getTargetCoordinates());
     }
 
     private Coordinates getNextStepTowardsTarget(Map<Coordinates, Coordinates> cameFrom, Coordinates target) {
         Coordinates current = target;
         Coordinates nextStep = this.getPosition();
-        Queue<Coordinates> q = new PriorityQueue<>();
-
-
         while (current != null && !current.equals(this.getPosition())) {
             nextStep = current;
             current = cameFrom.get(current);
         }
-//        System.out.println("Позиция демона"+this.getPosition());
-//        System.out.println("Идет в"+target);
-//        System.out.println(cameFrom);
-//        System.out.println(nextStep);
-//        System.out.println(current);
-        if(current==null){
+        if (current == null) {
             return this.getPosition();
         }
         return nextStep;
     }
-
-//    protected Coordinates getRouteToTarget(Map<Coordinates, Coordinates> mapToTarget, Coordinates targetCoordinates) {
-//        List<Coordinates> route = new ArrayList<>();
-//        Coordinates currentPosition = targetCoordinates;
-//
-//        while (!this.getPosition().equals(currentPosition)) {
-//            route.add(currentPosition);
-//            currentPosition = mapToTarget.get(currentPosition);
-//        }
-//
-//        return route.get(route.size() - 1);
-//    }
 
     protected abstract Coordinates getTargetCoordinates();
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class WorldMap {
     private static Map<Coordinates, Entity> world = new HashMap<>();
-    private static final int worldSizeX = 10;
+    private static final int worldSizeX = 20;
     private static final int worldSizeY = 10;
 
     public static void renderWorldMap() {
@@ -53,7 +53,6 @@ public class WorldMap {
     }
 
     public static int heuristic (Coordinates currentPosition, Coordinates targetPosition){
-        System.out.println(Math.abs(currentPosition.getX()-targetPosition.getX()) + Math.abs(currentPosition.getY()-targetPosition.getY()));
         return Math.abs(currentPosition.getX()-targetPosition.getX()) + Math.abs(currentPosition.getY()-targetPosition.getY());
     }
 
