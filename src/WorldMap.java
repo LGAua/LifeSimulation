@@ -1,6 +1,8 @@
 package src;
 
 import src.entities.Entity;
+import src.entities.staticEntities.Rock;
+import src.entities.staticEntities.Tree;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,6 +55,14 @@ public class WorldMap {
     public static int heuristic (Coordinates currentPosition, Coordinates targetPosition){
         System.out.println(Math.abs(currentPosition.getX()-targetPosition.getX()) + Math.abs(currentPosition.getY()-targetPosition.getY()));
         return Math.abs(currentPosition.getX()-targetPosition.getX()) + Math.abs(currentPosition.getY()-targetPosition.getY());
+    }
+
+    public static int moveCost(Coordinates from,Coordinates to){
+        if (getWorld().get(from) instanceof Rock || getWorld().get(from) instanceof Tree
+        || getWorld().get(to) instanceof Rock || getWorld().get(to) instanceof Tree){
+            return 100;
+        }
+        return 0;
     }
 
     public static Set<Coordinates> getOccupiedPositions() {
