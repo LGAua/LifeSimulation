@@ -19,6 +19,18 @@ public abstract class Creature extends Entity {
 
     protected abstract void makeMove();
 
+    protected Coordinates findClosestTarget(Queue<Coordinates> targetPositions){
+        Queue<PrioritizedNode> q = new PriorityQueue<>();
+        Coordinates closestTarget = null;
+        for (Coordinates targetPosition : targetPositions){
+            q.add(new PrioritizedNode(targetPosition,WorldMap.heuristic(targetPosition,this.getPosition())));
+        }
+        if (!q.isEmpty()){
+            closestTarget = q.poll().getCoordinates();
+        }
+        return closestTarget;
+    }
+
     protected Coordinates moveTowardsTarget(Coordinates target) {
         Queue<PrioritizedNode> frontier = new PriorityQueue<>();
         Map<Coordinates, Coordinates> cameFrom = new HashMap<>();

@@ -29,12 +29,7 @@ public class Predator extends Creature {
         if (targetCoordinates == null || !WorldMap.getWorld().containsKey(targetCoordinates)
                 || !(WorldMap.getWorld().get(targetCoordinates) instanceof Herbivore)) {
             Queue<PrioritizedNode> q = new PriorityQueue<>();
-            for (Coordinates herbivorePosition : Herbivore.getHerbivoresPositions()){
-                q.add(new PrioritizedNode(herbivorePosition,WorldMap.heuristic(this.getPosition(),herbivorePosition)));
-            }
-            if (!q.isEmpty()){
-                targetCoordinates = q.poll().getCoordinates();
-            }
+            targetCoordinates = findClosestTarget(Herbivore.getHerbivoresPositions());
         }
 
         if (targetCoordinates != null) {
