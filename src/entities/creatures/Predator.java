@@ -30,16 +30,23 @@ public class Predator extends Creature {
         if (targetCoordinates == null || !WorldMap.getWorld().containsKey(targetCoordinates)
                 || !(WorldMap.getWorld().get(targetCoordinates) instanceof Herbivore)) {
             targetCoordinates = findClosestTarget(getPositionsOfClass(Herbivore.class));
+            if (((Herbivore) WorldMap.getWorld().get(targetCoordinates)).getPower()>this.power){
+                targetCoordinates = findClosestTarget(getPositionsOfClass(Grass.class));
+            }
         }
 
         if (targetCoordinates != null) {
             Coordinates moveToCoordinates = moveTowardsTarget(targetCoordinates);
-            if ((WorldMap.getWorld().get(moveToCoordinates) instanceof Herbivore)){
-
+            if (WorldMap.getWorld().get(moveToCoordinates) instanceof Herbivore
+                    && !((Herbivore) WorldMap.getWorld().get(moveToCoordinates)).isEvolved()) {
                 int herbivoreHealth = ((Herbivore) WorldMap.getWorld().get(moveToCoordinates)).getHealth();
                 ((Herbivore) WorldMap.getWorld().get(moveToCoordinates)).setHealth(--herbivoreHealth);
                 WorldMap.moveEntity(this, moveToCoordinates);
-            }else {
+            } else if (WorldMap.getWorld().get(moveToCoordinates) instanceof Herbivore
+                    && ((Herbivore) WorldMap.getWorld().get(moveToCoordinates)).isEvolved()) {
+
+                WorldMap.moveEntity(this, moveTowardsTarget(findClosestTarget(getPositionsOfClass(Grass.class))));
+            } else {
                 WorldMap.moveEntity(this, moveToCoordinates);
             }
         }

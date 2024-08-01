@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Queue;
 
 public class Grass extends Entity {
-    private String icon = "\uD83C\uDF40";
+    private String icon = "\uD83E\uDDEC";
 
     public Grass(Coordinates coordinates){
         position = coordinates;

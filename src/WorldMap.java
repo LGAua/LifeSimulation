@@ -11,10 +11,11 @@ import java.util.Set;
 
 public class WorldMap {
     private static Map<Coordinates, Entity> world = new HashMap<>();
-    private static final int worldSizeX = 5;
-    private static final int worldSizeY = 5;
+    private static final int worldSizeX = 10;
+    private static final int worldSizeY = 10;
 
     public static void renderWorldMap() {
+        System.out.println();
         for (int y = 0; y < worldSizeY; y++) {
             for (int x = 0; x < worldSizeX; x++) {
                 Coordinates coordinates = new Coordinates(x, y);
@@ -74,6 +75,10 @@ public class WorldMap {
 
     public static Map<Coordinates, Entity> getWorld() {
         return new HashMap<>(world);
+    }
+
+    public static boolean cellIsEmpty(Coordinates coordinates){
+        return world.containsKey(coordinates);
     }
 
     public static int getWorldSizeX() {

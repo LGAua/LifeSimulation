@@ -21,7 +21,7 @@ public class Actions {
             WorldMap.addEntity(new Tree(new Coordinates(Coordinates.getRandomCoordinates().getX(), amountOFHerbivores)));
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 15; i++) {
             WorldMap.addEntity(new Grass(Coordinates.getRandomCoordinates()));
         }
 

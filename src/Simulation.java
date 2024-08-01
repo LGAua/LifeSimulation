@@ -12,7 +12,7 @@ public class Simulation {
     public static List<Creature> creatures = new LinkedList<>();
 
     public static void main(String[] args) throws InterruptedException {
-        Actions.addEntitiesOnMap(1, 2);
+        Actions.addEntitiesOnMap(2, 3);
         WorldMap.renderWorldMap();
         while (true) {
             for (Map.Entry<Coordinates, Entity> entry : WorldMap.getWorld().entrySet()) {
@@ -20,7 +20,6 @@ public class Simulation {
                     creatures.add((Creature) entry.getValue());
                 }
             }
-
             for (Creature creature : creatures) {
                 if (creature instanceof Predator) {
                     Predator predator = (Predator) creature;
@@ -28,7 +27,8 @@ public class Simulation {
                         for (int i = 0; i < predator.getAmountOfMoves(); i++) {
                             predator.makeMove();
                             WorldMap.renderWorldMap();
-                            Thread.sleep(1000);
+                            System.out.println("Походил хищник в позицию: "+ predator.getPosition());
+                            Thread.sleep(300);
                         }
                     }
                 } else if (creature instanceof Herbivore) {
@@ -37,7 +37,8 @@ public class Simulation {
                         for (int i = 0; i < herbivore.getAmountOfMoves(); i++) {
                             herbivore.makeMove();
                             WorldMap.renderWorldMap();
-                            Thread.sleep(1000);
+                            System.out.println("Походил травоядный в позицию: "+ herbivore.getPosition());
+                            Thread.sleep(300);
                         }
                     }
                 }
