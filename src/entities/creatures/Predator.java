@@ -34,7 +34,9 @@ public class Predator extends Creature {
             if (victim.isInstance(WorldMap.getWorld().get(moveToCoordinates))) {
                 attackVictim(victim, moveToCoordinates);
                 checkForEvolution();
-            }else {
+            } else if (WorldMap.getWorld().get(moveToCoordinates) instanceof Herbivore && !isEvolved) {
+                WorldMap.moveEntity(this,moveToAnotherCoordinates());
+            } else {
                 WorldMap.moveEntity(this, moveToCoordinates);
             }
         } else {
@@ -84,7 +86,7 @@ public class Predator extends Creature {
         this.icon = icon;
     }
 
-    public void setEvolved(boolean evolved) {
+    private void setEvolved(boolean evolved) {
         isEvolved = evolved;
     }
 }

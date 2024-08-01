@@ -24,19 +24,23 @@ public class Herbivore extends Creature {
 
         if (targetCoordinates != null) {
             Coordinates moveToCoordinates = moveTowardsTarget(targetCoordinates);
-            if (victim.isInstance(WorldMap.getWorld().get(moveToCoordinates))) {
-                attackVictim(victim, moveToCoordinates);
-                checkForEvolution();
-            } else if (WorldMap.getWorld().get(moveToCoordinates) instanceof Predator && !isEvolved) {
-                WorldMap.moveEntity(this,moveToAnotherCoordinates());
-            }else{
-                WorldMap.moveEntity(this,moveToCoordinates);
+            Entity entityOnNextCell = WorldMap.getWorld().get(moveToCoordinates);
+            if (victim.isInstance(entityOnNextCell)) {
+                if (entityOnNextCell instanceof Predator && ((Creature) entityOnNextCell).isEvolved()) {
+                    WorldMap.moveEntity(this, moveToAnotherCoordinates());
+                } else {
+                    attackVictim(victim, moveToCoordinates);
+                    checkForEvolution();
+                }
+            } else if (entityOnNextCell instanceof Predator && !isEvolved) {
+                WorldMap.moveEntity(this, moveToAnotherCoordinates());
+            } else {
+                WorldMap.moveEntity(this, moveToCoordinates);
             }
-        }else {
-            WorldMap.moveEntity(this,moveToAnotherCoordinates());
+        } else {
+            WorldMap.moveEntity(this, moveToAnotherCoordinates());
         }
     }
-
 
 
     private void checkForEvolution() {

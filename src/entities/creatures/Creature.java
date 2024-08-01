@@ -18,6 +18,10 @@ public abstract class Creature extends Entity {
 
     protected abstract void makeMove();
 
+    protected boolean isEvolved() {
+        return isEvolved;
+    }
+
     protected Coordinates findClosestTarget(Queue<Coordinates> targetPositions){
         Queue<PrioritizedNode> q = new PriorityQueue<>();
         Coordinates closestTarget = null;
