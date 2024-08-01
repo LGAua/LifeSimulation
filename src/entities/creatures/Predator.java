@@ -2,8 +2,10 @@ package src.entities.creatures;
 
 import src.Coordinates;
 import src.PrioritizedNode;
+import src.Simulation;
 import src.WorldMap;
 import src.entities.Entity;
+import src.entities.staticEntities.Grass;
 import src.entities.staticEntities.Rock;
 import src.entities.staticEntities.Tree;
 
@@ -11,9 +13,8 @@ import java.util.*;
 
 
 public class Predator extends Creature {
-    private int power = 1;
+    private int power = 2;
     private String icon = "\uD83D\uDC7A";
-    private static Queue<Coordinates> predatorsPositions = new LinkedList<>();
     private Coordinates targetCoordinates;
 
     public Predator(Coordinates coordinates) {
@@ -28,24 +29,28 @@ public class Predator extends Creature {
 
         if (targetCoordinates == null || !WorldMap.getWorld().containsKey(targetCoordinates)
                 || !(WorldMap.getWorld().get(targetCoordinates) instanceof Herbivore)) {
-            Queue<PrioritizedNode> q = new PriorityQueue<>();
-            targetCoordinates = findClosestTarget(Herbivore.getHerbivoresPositions());
+            targetCoordinates = findClosestTarget(getPositionsOfClass(Herbivore.class));
         }
 
         if (targetCoordinates != null) {
             Coordinates moveToCoordinates = moveTowardsTarget(targetCoordinates);
-            WorldMap.moveEntity(this, moveToCoordinates);
+            if ((WorldMap.getWorld().get(moveToCoordinates) instanceof Herbivore)){
+
+                int herbivoreHealth = ((Herbivore) WorldMap.getWorld().get(moveToCoordinates)).getHealth();
+                ((Herbivore) WorldMap.getWorld().get(moveToCoordinates)).setHealth(--herbivoreHealth);
+                WorldMap.moveEntity(this, moveToCoordinates);
+            }else {
+                WorldMap.moveEntity(this, moveToCoordinates);
+            }
         }
     }
 
+    private int getPower() {
+        return power;
+    }
 
-    public static Queue<Coordinates> getPredatorsPositions() {
-        for (Map.Entry<Coordinates, Entity> el : WorldMap.getWorld().entrySet()) {
-            if (el.getValue() instanceof Predator && !predatorsPositions.contains(el.getKey())) {
-                predatorsPositions.add(el.getKey());
-            }
-        }
-        return new LinkedList<>(predatorsPositions);
+    private void setPower(int power) {
+        this.power = power;
     }
 
     @Override

@@ -5,28 +5,45 @@ import src.entities.creatures.Creature;
 import src.entities.creatures.Herbivore;
 import src.entities.creatures.Predator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class Simulation {
+    public static List<Creature> creatures = new LinkedList<>();
+
     public static void main(String[] args) throws InterruptedException {
-        Actions.addEntitiesOnMap(2,5);
-        List<Predator> list = new ArrayList<>();
+        Actions.addEntitiesOnMap(1, 2);
         WorldMap.renderWorldMap();
-        while (true){
-            Thread.sleep(1000);
-            for (Map.Entry<Coordinates,Entity> entry : WorldMap.getWorld().entrySet()){
-                if (entry.getValue() instanceof Predator){
-                    list.add((Predator)entry.getValue());
+        while (true) {
+            for (Map.Entry<Coordinates, Entity> entry : WorldMap.getWorld().entrySet()) {
+                if (entry.getValue() instanceof Creature) {
+                    creatures.add((Creature) entry.getValue());
                 }
             }
-            for (Predator predator : list){
-                predator.makeMove();
+
+            for (Creature creature : creatures) {
+                if (creature instanceof Predator) {
+                    Predator predator = (Predator) creature;
+                    if (predator.getHealth() != 0) {
+                        for (int i = 0; i < predator.getAmountOfMoves(); i++) {
+                            predator.makeMove();
+                            WorldMap.renderWorldMap();
+                            Thread.sleep(1000);
+                        }
+                    }
+                } else if (creature instanceof Herbivore) {
+                    Herbivore herbivore = (Herbivore) creature;
+                    if (herbivore.getHealth() != 0) {
+                        for (int i = 0; i < herbivore.getAmountOfMoves(); i++) {
+                            herbivore.makeMove();
+                            WorldMap.renderWorldMap();
+                            Thread.sleep(1000);
+                        }
+                    }
+                }
             }
-            list.clear();
-            WorldMap.renderWorldMap();
+            creatures.clear();
+
         }
 
 

@@ -4,18 +4,16 @@ import src.Coordinates;
 import src.PrioritizedNode;
 import src.WorldMap;
 import src.entities.Entity;
-import src.entities.staticEntities.Rock;
-import src.entities.staticEntities.Tree;
 
 import java.util.*;
 
 public abstract class Creature extends Entity {
-    protected int health = 5;
-    protected int movement = 1;
+    protected int health = 1;
+    protected int power = 0;
+    protected int amountOfMoves = 2;
     protected int[] movesX = {0, -1, 1, 0};
     protected int[] movesY = {-1, 0, 0, 1};
     protected Coordinates targetCoordinates = this.getTargetCoordinates();
-
 
     protected abstract void makeMove();
 
@@ -41,7 +39,7 @@ public abstract class Creature extends Entity {
         cameFrom.put(this.getPosition(), null);
         costSoFar.put(this.getPosition(), 0);
 
-        System.out.println("**************************");
+        System.out.println(this.getPosition() + "**************************" + this.getClass());
 
         while (!frontier.isEmpty()) {
             Coordinates currentPosition = frontier.poll().getCoordinates();
@@ -75,5 +73,17 @@ public abstract class Creature extends Entity {
         return nextStep;
     }
 
+    public int getAmountOfMoves() {
+        return amountOfMoves;
+    }
+
     protected abstract Coordinates getTargetCoordinates();
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getHealth() {
+        return health;
+    }
 }

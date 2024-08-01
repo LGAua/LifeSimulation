@@ -11,8 +11,8 @@ import java.util.Set;
 
 public class WorldMap {
     private static Map<Coordinates, Entity> world = new HashMap<>();
-    private static final int worldSizeX = 20;
-    private static final int worldSizeY = 10;
+    private static final int worldSizeX = 5;
+    private static final int worldSizeY = 5;
 
     public static void renderWorldMap() {
         for (int y = 0; y < worldSizeY; y++) {

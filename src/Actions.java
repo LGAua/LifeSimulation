@@ -13,15 +13,15 @@ public class Actions {
 
 
     public static void addEntitiesOnMap(int amountOfPredators, int amountOFHerbivores) {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 1; i++) {
             WorldMap.addEntity(new Rock(new Coordinates(amountOfPredators, Coordinates.getRandomCoordinates().getY())));
         }
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 1; i++) {
             WorldMap.addEntity(new Tree(new Coordinates(Coordinates.getRandomCoordinates().getX(), amountOFHerbivores)));
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             WorldMap.addEntity(new Grass(Coordinates.getRandomCoordinates()));
         }
 
