@@ -11,8 +11,8 @@ import java.util.Set;
 
 public class WorldMap {
     private static Map<Coordinates, Entity> world = new HashMap<>();
-    private static final int worldSizeX = 10;
-    private static final int worldSizeY = 10;
+    private static final int worldSizeX = 5;
+    private static final int worldSizeY = 5;
 
     public static void renderWorldMap() {
         System.out.println();
@@ -54,6 +54,9 @@ public class WorldMap {
     }
 
     public static int heuristic (Coordinates currentPosition, Coordinates targetPosition){
+        if(currentPosition==null || targetPosition==null){
+            return 0;
+        }
         return Math.abs(currentPosition.getX()-targetPosition.getX()) + Math.abs(currentPosition.getY()-targetPosition.getY());
     }
 
@@ -78,7 +81,7 @@ public class WorldMap {
     }
 
     public static boolean cellIsEmpty(Coordinates coordinates){
-        return world.containsKey(coordinates);
+        return !world.containsKey(coordinates);
     }
 
     public static int getWorldSizeX() {

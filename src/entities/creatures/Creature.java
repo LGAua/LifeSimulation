@@ -4,6 +4,7 @@ import src.Coordinates;
 import src.PrioritizedNode;
 import src.WorldMap;
 import src.entities.Entity;
+import src.entities.staticEntities.Grass;
 
 import java.util.*;
 
@@ -11,8 +12,8 @@ public abstract class Creature extends Entity {
     protected int health = 1;
     protected int power = 0;
     protected int amountOfMoves = 2;
-    protected int[] movesX = {0, -1, 1, 0};
-    protected int[] movesY = {-1, 0, 0, 1};
+    protected boolean isEvolved = false;
+    protected Class<? extends Entity> victim;
     protected Coordinates targetCoordinates = this.getTargetCoordinates();
 
     protected abstract void makeMove();
@@ -59,6 +60,38 @@ public abstract class Creature extends Entity {
         }
         return getNextStepTowardsTarget(cameFrom, this.getTargetCoordinates());
     }
+    protected Coordinates findVictimCoordinates(Class<? extends Entity> victimClass){
+        if (targetCoordinates == null || !WorldMap.getWorld().containsKey(targetCoordinates)
+                || !(victimClass.isInstance(WorldMap.getWorld().get(targetCoordinates)))){
+            targetCoordinates = findClosestTarget(getPositionsOfClass(victimClass));
+            return targetCoordinates;
+        }
+        return targetCoordinates;
+    }
+
+    protected void attackVictim(Class<? extends Entity> victim, Coordinates position){
+        if (Creature.class.getName().equals(victim.getSuperclass().getName())){
+            int victimHealth = ((Creature) WorldMap.getWorld().get(position)).getHealth();
+            ((Creature) WorldMap.getWorld().get(position)).setHealth(--victimHealth);
+        }else{
+            power++;
+        }
+        WorldMap.moveEntity(this, position);
+    }
+
+    protected Coordinates moveToAnotherCoordinates(){
+        Coordinates moveToAnotherCoordinates = null;
+        for (Coordinates coordinates : WorldMap.getAdjacentCells(this.getPosition())) {
+            if (WorldMap.cellIsEmpty(coordinates)) {
+                moveToAnotherCoordinates = coordinates;
+            }
+        }
+        if (moveToAnotherCoordinates != null) {
+            return moveToAnotherCoordinates;
+        }
+        return getPosition();
+    }
+
 
     private Coordinates getNextStepTowardsTarget(Map<Coordinates, Coordinates> cameFrom, Coordinates target) {
         Coordinates current = target;
@@ -75,6 +108,10 @@ public abstract class Creature extends Entity {
 
     public int getAmountOfMoves() {
         return amountOfMoves;
+    }
+
+    public Class<? extends Entity> getVictim() {
+        return victim;
     }
 
     protected abstract Coordinates getTargetCoordinates();

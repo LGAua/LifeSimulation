@@ -2,7 +2,6 @@ package src.entities;
 
 import src.Coordinates;
 import src.WorldMap;
-import src.entities.staticEntities.Grass;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -12,14 +11,14 @@ public abstract class Entity {
     protected Coordinates position;
     protected String icon;
 
-    protected static Queue<Coordinates> getPositionsOfClass(Class classOfEntity) {
-        Queue<Coordinates> grassPositions = new LinkedList<>();
+    protected static Queue<Coordinates> getPositionsOfClass(Class<? extends Entity> classOfEntity) {
+        Queue<Coordinates> positions = new LinkedList<>();
         for (Map.Entry<Coordinates,Entity> el : WorldMap.getWorld().entrySet()){
-            if (classOfEntity.isInstance(el.getValue()) && !grassPositions.contains(el.getKey())){
-                grassPositions.add(el.getKey());
+            if (classOfEntity.isInstance(el.getValue()) && !positions.contains(el.getKey())){
+                positions.add(el.getKey());
             }
         }
-        return grassPositions;
+        return positions;
     }
 
     public Coordinates getPosition() {

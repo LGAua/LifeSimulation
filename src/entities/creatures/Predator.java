@@ -13,9 +13,8 @@ import java.util.*;
 
 
 public class Predator extends Creature {
-    private int power = 2;
     private String icon = "\uD83D\uDC7A";
-    private Coordinates targetCoordinates;
+    private Class<? extends Entity> victim = Herbivore.class;
 
     public Predator(Coordinates coordinates) {
         position = coordinates;
@@ -27,28 +26,39 @@ public class Predator extends Creature {
             targetCoordinates = null;
         }
 
-        if (targetCoordinates == null || !WorldMap.getWorld().containsKey(targetCoordinates)
-                || !(WorldMap.getWorld().get(targetCoordinates) instanceof Herbivore)) {
-            targetCoordinates = findClosestTarget(getPositionsOfClass(Herbivore.class));
-            if (((Herbivore) WorldMap.getWorld().get(targetCoordinates)).getPower()>this.power){
-                targetCoordinates = findClosestTarget(getPositionsOfClass(Grass.class));
-            }
-        }
+        targetCoordinates = findVictimCoordinates(victim);
 
         if (targetCoordinates != null) {
+            targetCoordinates = checkIfVictimChange();
             Coordinates moveToCoordinates = moveTowardsTarget(targetCoordinates);
-            if (WorldMap.getWorld().get(moveToCoordinates) instanceof Herbivore
-                    && !((Herbivore) WorldMap.getWorld().get(moveToCoordinates)).isEvolved()) {
-                int herbivoreHealth = ((Herbivore) WorldMap.getWorld().get(moveToCoordinates)).getHealth();
-                ((Herbivore) WorldMap.getWorld().get(moveToCoordinates)).setHealth(--herbivoreHealth);
-                WorldMap.moveEntity(this, moveToCoordinates);
-            } else if (WorldMap.getWorld().get(moveToCoordinates) instanceof Herbivore
-                    && ((Herbivore) WorldMap.getWorld().get(moveToCoordinates)).isEvolved()) {
-
-                WorldMap.moveEntity(this, moveTowardsTarget(findClosestTarget(getPositionsOfClass(Grass.class))));
-            } else {
+            if (victim.isInstance(WorldMap.getWorld().get(moveToCoordinates))) {
+                attackVictim(victim, moveToCoordinates);
+                checkForEvolution();
+            }else {
                 WorldMap.moveEntity(this, moveToCoordinates);
             }
+        } else {
+            WorldMap.moveEntity(this, moveToAnotherCoordinates());
+        }
+    }
+
+    private Coordinates checkIfVictimChange(){
+        Entity entity = WorldMap.getWorld().get(targetCoordinates);
+        if (entity instanceof Herbivore
+                && ((Herbivore) entity).isEvolved()
+                && this.getPower() < ((Herbivore) entity).getPower()) {
+            victim = Grass.class;
+            return findVictimCoordinates(victim);
+        }
+        return targetCoordinates;
+    }
+
+
+    private void checkForEvolution() {
+        if (this.getPower()>=3) {
+            setEvolved(true);
+            setIcon("\uD83D\uDE08");
+            victim = Herbivore.class;
         }
     }
 
@@ -68,5 +78,13 @@ public class Predator extends Creature {
     @Override
     public String getIcon() {
         return icon;
+    }
+
+    private void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public void setEvolved(boolean evolved) {
+        isEvolved = evolved;
     }
 }
