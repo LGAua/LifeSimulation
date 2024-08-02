@@ -16,7 +16,8 @@ public class Simulation {
     public List<Action> turnActions = new ArrayList<>();
     public int amountOfHerbivores;
     public int amountOfPredators;
-    private boolean gameIsOver;
+    public int numberOfRound=0;
+    public boolean gameIsOver = false;
 
     public Simulation(int amountOfHerbivores, int amountOfPredators) {
         this.amountOfHerbivores = amountOfHerbivores;
@@ -28,30 +29,45 @@ public class Simulation {
         Simulation simulation = new Simulation(3, 3);
         Scanner scanner = new Scanner(System.in);
         simulation.startSimulation();
-        System.out.println("===========================================");
-        System.out.println("Welcome to the Life Simulation Game.");
-        System.out.println("Where Creatures need to evolve for their surviving");
-        WorldMap.renderWorldMap();
-
-        while (true){
-            simulation.nextTurn();
+        System.out.println("===================================================");
+        System.out.println("       Welcome to the Life Simulation Game.");
+        System.out.println("Where Creatures need to evolve for their surviving.");
+        System.out.println();
+        System.out.println("Would you like to play? (Y/N)");
+        String answer = scanner.nextLine();
+        if ("y".equals(answer.toLowerCase())) {
+            WorldMap.renderWorldMap();
+            System.out.println("Choose action (1/2)");
+            while (true) {
+                System.out.println("1 - Start next round");
+                System.out.println("2 - Start infinite simulation");
+                answer = scanner.nextLine();
+                if ("1".equals(answer)) {
+                    simulation.nextTurn();
+                } else if ("2".equals(answer)) {
+                    while (!simulation.gameIsOver) {
+                        simulation.nextTurn();
+                    }
+                    System.out.println("Game is over");
+                    break;
+                } else {
+                    break;
+                }
+            }
         }
+        scanner.close();
     }
 
     public void nextTurn() {
-        for (Action action : turnActions){
+        for (Action action : turnActions) {
             action.perform();
         }
     }
 
     public void startSimulation() {
-        for (Action action : initActions){
+        for (Action action : initActions) {
             action.perform();
         }
-    }
-
-    public void pauseSimulation() {
-
     }
 
     public void prepareForGame() {
@@ -61,7 +77,7 @@ public class Simulation {
         initActions.add(new SpawnPredators(amountOfPredators));
         initActions.add(new SpawnHerbivores(amountOfHerbivores));
 
-        turnActions.add(new MoveCreatures(creatures));
+        turnActions.add(new MoveCreatures(creatures,this));
     }
 }
 

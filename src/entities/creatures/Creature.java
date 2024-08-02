@@ -76,7 +76,7 @@ public abstract class Creature extends Entity {
         if (Creature.class.getName().equals(victim.getSuperclass().getName())){
             int victimHealth = ((Creature) WorldMap.getWorld().get(position)).getHealth();
             ((Creature) WorldMap.getWorld().get(position)).setHealth(--victimHealth);
-            System.out.println(this + "just killed entity " +  WorldMap.getWorld().get(position).toString());
+            System.out.println(this + " has just killed entity " +  WorldMap.getWorld().get(position).toString());
         }else{
             power++;
         }
