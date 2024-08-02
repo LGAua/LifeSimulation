@@ -1,77 +1,67 @@
 package src;
 
+import src.Actions.*;
 import src.entities.Entity;
 import src.entities.creatures.Creature;
 import src.entities.creatures.Herbivore;
 import src.entities.creatures.Predator;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 
 public class Simulation {
-    public static List<Creature> creatures = new LinkedList<>();
+    public List<Creature> creatures = new ArrayList<>();
+    public List<Action> initActions = new ArrayList<>();
+    public List<Action> turnActions = new ArrayList<>();
+    public int amountOfHerbivores;
+    public int amountOfPredators;
+    private boolean gameIsOver;
 
-    public static void main(String[] args) throws InterruptedException {
-        Actions.addEntitiesOnMap(3, 3);
+    public Simulation(int amountOfHerbivores, int amountOfPredators) {
+        this.amountOfHerbivores = amountOfHerbivores;
+        this.amountOfPredators = amountOfPredators;
+        prepareForGame();
+    }
+
+    public static void main(String[] args) {
+        Simulation simulation = new Simulation(3, 3);
+        Scanner scanner = new Scanner(System.in);
+        simulation.startSimulation();
+        System.out.println("===========================================");
+        System.out.println("Welcome to the Life Simulation Game.");
+        System.out.println("Where Creatures need to evolve for their surviving");
         WorldMap.renderWorldMap();
-        while (true) {
-            for (Map.Entry<Coordinates, Entity> entry : WorldMap.getWorld().entrySet()) {
-                if (entry.getValue() instanceof Creature) {
-                    creatures.add((Creature) entry.getValue());
-                }
-            }
-            for (Creature creature : creatures) {
-                if (creature instanceof Predator) {
-                    Predator predator = (Predator) creature;
-                    if (predator.getHealth() > 0) {
-                        for (int i = 0; i < predator.getAmountOfMoves(); i++) {
-                            predator.makeMove();
-                            WorldMap.renderWorldMap();
-                            System.out.println("Походил хищник в позицию: "+ predator.getPosition());
-                            Thread.sleep(100);
-                        }
-                    }
-                } else if (creature instanceof Herbivore) {
-                    Herbivore herbivore = (Herbivore) creature;
-                    if (herbivore.getHealth() != 0) {
-                        for (int i = 0; i < herbivore.getAmountOfMoves(); i++) {
-                            herbivore.makeMove();
-                            WorldMap.renderWorldMap();
-                            System.out.println("Походил травоядный в позицию: "+ herbivore.getPosition());
-                            Thread.sleep(100);
-                        }
-                    }
-                }
-            }
-            creatures.clear();
 
+        while (true){
+            simulation.nextTurn();
         }
+    }
 
+    public void nextTurn() {
+        for (Action action : turnActions){
+            action.perform();
+        }
+    }
 
-//        Actions.addEntitiesOnMap(2, 5);
-//        WorldMap.renderWorldMap();
-//        List<Creature> creatures = new ArrayList<>();
-//        for (Map.Entry<Coordinates, Entity> entity : WorldMap.getWorld().entrySet()) {
-//            if (entity.getValue() instanceof Creature) {
-//                creatures.add((Creature) entity.getValue());
-//            }
-//        }
-//
-//
-//        while (true) {
-//            for (Creature creature : creatures){
-//                if (creature instanceof Predator){
-//                    Predator predator = (Predator) creature;
-//                    predator.makeMove();
-//                } else if (creature instanceof Herbivore) {
-//                    Herbivore herbivore = (Herbivore) creature;
-//                    herbivore.makeMove();
-//                }
-//            }
-//            System.out.println();
-//            System.out.println();
-//            WorldMap.renderWorldMap();
-//            Thread.sleep(500);
-//        }
+    public void startSimulation() {
+        for (Action action : initActions){
+            action.perform();
+        }
+    }
+
+    public void pauseSimulation() {
+
+    }
+
+    public void prepareForGame() {
+        initActions.add(new SpawnRocks());
+        initActions.add(new SpawnTrees());
+        initActions.add(new SpawnGrass(amountOfHerbivores));
+        initActions.add(new SpawnPredators(amountOfPredators));
+        initActions.add(new SpawnHerbivores(amountOfHerbivores));
+
+        turnActions.add(new MoveCreatures(creatures));
     }
 }
+

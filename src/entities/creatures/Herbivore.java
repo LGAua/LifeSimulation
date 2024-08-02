@@ -81,4 +81,7 @@ public class Herbivore extends Creature {
         return icon;
     }
 
+    public String toString() {
+        return "Herbivore";
+    }
 }

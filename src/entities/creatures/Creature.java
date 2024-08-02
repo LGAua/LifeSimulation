@@ -6,6 +6,7 @@ import src.WorldMap;
 import src.entities.Entity;
 import src.entities.staticEntities.Grass;
 
+import javax.crypto.spec.PSource;
 import java.util.*;
 
 public abstract class Creature extends Entity {
@@ -44,8 +45,6 @@ public abstract class Creature extends Entity {
         cameFrom.put(this.getPosition(), null);
         costSoFar.put(this.getPosition(), 0);
 
-        System.out.println(this.getPosition() + "**************************" + this.getClass());
-
         while (!frontier.isEmpty()) {
             Coordinates currentPosition = frontier.poll().getCoordinates();
             if (currentPosition.equals(target)) {
@@ -77,6 +76,7 @@ public abstract class Creature extends Entity {
         if (Creature.class.getName().equals(victim.getSuperclass().getName())){
             int victimHealth = ((Creature) WorldMap.getWorld().get(position)).getHealth();
             ((Creature) WorldMap.getWorld().get(position)).setHealth(--victimHealth);
+            System.out.println(this + "just killed entity " +  WorldMap.getWorld().get(position).toString());
         }else{
             power++;
         }

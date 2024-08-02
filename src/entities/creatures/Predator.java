@@ -89,4 +89,9 @@ public class Predator extends Creature {
     private void setEvolved(boolean evolved) {
         isEvolved = evolved;
     }
+
+    @Override
+    public String toString() {
+        return "Predator";
+    }
 }

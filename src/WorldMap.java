@@ -65,7 +65,7 @@ public class WorldMap {
         || getWorld().get(to) instanceof Rock || getWorld().get(to) instanceof Tree){
             return 100;
         }
-        return 0;
+        return 1;
     }
 
     public static Set<Coordinates> getOccupiedPositions() {
